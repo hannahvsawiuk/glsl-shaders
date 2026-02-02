@@ -1,0 +1,26 @@
+[Unit]
+Description=GLSL Shader Screensaver (setlist)
+# Wait for graphical target so DISPLAY exists; user must be logged in for XAUTHORITY.
+# Prefer shader-screensaver.user.service for "start when I log in" (install in ~/.config/systemd/user/).
+After=graphical.target
+
+[Service]
+# Set User to your username; set WorkingDirectory and ExecStart to your repo path.
+# Using /bin/bash explicitly avoids EXEC 203 (script execute bit or shebang issues).
+User=sleepybrat
+WorkingDirectory=/home/sleepybrat/quicksand_shaders
+ExecStart=/bin/bash /home/sleepybrat/quicksand_shaders/shader-screensaver.sh
+Restart=always
+RestartSec=10
+
+# Needed when not running from a login shell: PATH, DISPLAY, and XAUTHORITY (so X accepts the connection).
+# glslViewer is a custom build at /home/sleepybrat/glslViewer/build
+Environment="PATH=/home/sleepybrat/glslViewer/build:/home/sleepybrat/.local/bin:/usr/local/bin:/usr/bin:/bin"
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=/home/sleepybrat/.Xauthority"
+
+# Optional: use a custom setlist file
+# Environment="SETLIST_FILE=/home/sleepybrat/quicksand_shaders/setlist.conf"
+
+[Install]
+WantedBy=graphical.target

@@ -1,0 +1,23 @@
+[Unit]
+Description=GLSL Shader Screensaver (setlist)
+# Start after the user has a graphical session (display + X authority ready)
+After=graphical-session.target
+
+[Service]
+# User service: runs as the user who enabled it. Paths use %h = your home directory.
+WorkingDirectory=%h/quicksand_shaders
+ExecStart=/bin/bash %h/quicksand_shaders/shader-screensaver.sh
+Restart=always
+RestartSec=60
+
+# Ensure display access when started at login (adjust path if your repo is elsewhere)
+Environment="PATH=%h/glslViewer/build:/usr/local/bin:/usr/bin:/bin"
+Environment="DISPLAY=:0"
+Environment="XAUTHORITY=%h/.Xauthority"
+
+# Optional: use a custom setlist file
+# Environment="SETLIST_FILE=%h/quicksand_shaders/setlist.conf"
+
+[Install]
+# Start when user logs in (graphical session)
+WantedBy=graphical-session.target
